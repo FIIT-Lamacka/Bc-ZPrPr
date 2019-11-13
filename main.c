@@ -1,18 +1,20 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <stdlib.h>
+#include <string.h>
 
 void nacitanie(char *p_povodny);
 void vypis(char *p_povodny);
-void uprava(char *p_povodny, char *p_upraveny);
+void uprava(char *p_povodny, char *p_upraveny, int povodny_l);
 
 int main() {
-    int end=0,right,i;
+    int end=0,right,i,povodny_l;
     char prikaz, povodny[1000], upraveny[1000];
 
     while(1){
         prikaz = getchar();
         prikaz=tolower(prikaz);
+        povodny_l =strlen(povodny);
 
 
 
@@ -28,7 +30,7 @@ int main() {
 
 
             case 'u'  :
-                uprava(povodny,upraveny);
+                uprava(povodny,upraveny,povodny_l);
                 break;
 
 
@@ -57,6 +59,7 @@ int main() {
                 return 0;
                 break;
         }
+
 
 
         if(prikaz != '\n' && prikaz != 'n' && prikaz != 'v' && prikaz != 'u' && prikaz != 's' && prikaz != 'd' && prikaz != 'h' && prikaz != 'c'){
@@ -96,14 +99,13 @@ void vypis(char *p_povodny){
     return 0;
 }
 
-void uprava(char *p_povodny, char *p_upraveny){
-    int i, empty=1,j=0,lenght;
+void uprava(char *p_povodny, char *p_upraveny, int povodny_lenght){
+    int i,j=0,lenght;
     char help=0;
-    lenght = sizeof(*p_povodny);
-    printf("%d",lenght);
 
-
-    for(i=0;i<strlen(p_povodny);i++){
-        ;
+    for(i=0;i<povodny_lenght;i++){
+       if((*(p_povodny+i * sizeof(char *))>='a'&&*(p_povodny+i * sizeof(char *))<='z')||(*(p_povodny+i * sizeof(char *))>='A'&&(*(p_povodny+i * sizeof(char *)))<='Z')){
+            printf("%c",*p_povodny+i);
+       }
     }
 }
