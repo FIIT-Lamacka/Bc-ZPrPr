@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1573669983 source:c:\users\locad\desktop\zprp3\main.c
+	<stdio.h>
+	<ctype.h>
+	<stdlib.h>
+
