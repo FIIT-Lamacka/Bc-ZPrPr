@@ -16,9 +16,17 @@
 	<stdlib.h>
 	<string.h>
 
-1574252613 source:c:\users\locad\desktop\zprpr-master\main.c
+1574261763 source:c:\users\locad\desktop\zprpr-master\main.c
 	<stdio.h>
 	<ctype.h>
 	<stdlib.h>
 	<string.h>
+	<math.h>
+
+1574285297 source:c:\users\locad\desktop\pokus9\main.c
+	<stdio.h>
+	<ctype.h>
+	<stdlib.h>
+	<string.h>
+	<math.h>
 
