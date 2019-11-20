@@ -8,9 +8,10 @@ void vypis(char *p_povodny);
 void uprava(char *p_povodny, char *p_upraveny, int povodny_l, int *p_bola_upravena);
 void vypis_upravena(char povodny[], int upraveny);
 void dana_dlzka(char povodny[], int dlzka);
+void histogram(char upraveny[], int upraveny_l, int bola_upravena);
 
 int main() {
-    int end=0,right,i,povodny_l,bola_upravena=0;
+    int end=0,right,i,povodny_l,upraveny_l,bola_upravena=0;
     char prikaz, povodny[1000], upraveny[1000];
 
     for(i=0;i<1000;i++){
@@ -21,6 +22,8 @@ int main() {
         prikaz = getchar();
         prikaz=tolower(prikaz);
         povodny_l =strlen(povodny);
+        upraveny_l =strlen(upraveny);
+
 
 
         switch(prikaz) {
@@ -50,7 +53,7 @@ int main() {
 
 
             case 'h'  :
-                printf("Vypis");
+                histogram(upraveny, upraveny_l, bola_upravena);
                 break;
 
 
@@ -150,4 +153,34 @@ void dana_dlzka(char povodny[],int dlzka){
     }
     printf("\n");
 
+}
+
+void histogram(char upraveny[], int upraveny_l,int bola_upravena){
+    int pocet[26], total,i;
+    float priemer[26];
+
+    if(bola_upravena==0){
+        printf("Nie je k dispozicii upravena sprava\n");
+        return;
+    }
+    //NULOVANIE POLA
+    for(i=0;i<26;i++){
+        pocet[i]=0;
+        priemer[i]=0;
+    }
+    //NACITANIE HODNOT Z UPRAVENEHO DO POLA POCET
+    for(i=0;i<upraveny_l;i++){
+        pocet[(upraveny[i]-'A')]++;
+    }
+    //VYPOCET PERCENT
+    for(i=0;i<26;i++){
+        priemer[i]=((float)pocet[i]/(float)upraveny_l)*100;
+    }
+    //VYPIS
+    for(i=0;i<26;i++){
+        printf("%g ",priemer[i]);
+    }
+
+
+    printf("\nABCDEFGHIJKLMNOPQRSTUVWXYZ\n");
 }
