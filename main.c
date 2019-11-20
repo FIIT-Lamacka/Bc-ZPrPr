@@ -2,15 +2,17 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 void nacitanie(char *p_povodny);
 void vypis(char *p_povodny);
 void uprava(char *p_povodny, char *p_upraveny, int povodny_l, int *p_bola_upravena);
 void vypis_upravena(char povodny[], int upraveny);
 void dana_dlzka(char povodny[], int dlzka);
+void histogram(char upraveny[], int upraveny_l, int bola_upravena);
 
 int main() {
-    int end=0,right,i,povodny_l,bola_upravena=0;
+    int end=0,right,i,povodny_l,upraveny_l,bola_upravena=0;
     char prikaz, povodny[1000], upraveny[1000];
 
     for(i=0;i<1000;i++){
@@ -21,6 +23,8 @@ int main() {
         prikaz = getchar();
         prikaz=tolower(prikaz);
         povodny_l =strlen(povodny);
+        upraveny_l =strlen(upraveny);
+
 
 
         switch(prikaz) {
@@ -50,7 +54,7 @@ int main() {
 
 
             case 'h'  :
-                printf("Vypis");
+                histogram(upraveny, upraveny_l, bola_upravena);
                 break;
 
 
@@ -131,7 +135,7 @@ void dana_dlzka(char povodny[],int dlzka){
         if(povodny[i]=='\0' || povodny[i]==' ' || povodny[i]=='\n' ){
 
             if(count==num){
-                printf("%s ",vypis);
+                printf("%s\n",vypis);
             }
 
             count=-1;
@@ -148,6 +152,57 @@ void dana_dlzka(char povodny[],int dlzka){
         j++;
         i++;
     }
-    printf("\n");
 
+}
+
+void histogram(char upraveny[], int upraveny_l,int bola_upravena){
+    int pocet[26], total,i,j, highest_zaok=0;
+    float priemer[26],highest=0;
+
+    if(bola_upravena==0){
+        printf("Nie je k dispozicii upravena sprava\n");
+        return;
+    }
+    //NULOVANIE POLA
+    for(i=0;i<26;i++){
+        pocet[i]=0;
+        priemer[i]=0;
+    }
+    //NACITANIE HODNOT Z UPRAVENEHO DO POLA POCET
+    for(i=0;i<upraveny_l;i++){
+        pocet[(upraveny[i]-'A')]++;
+    }
+    //VYPOCET PERCENT
+    for(i=0;i<26;i++){
+        priemer[i]=((float)pocet[i]/(float)upraveny_l)*100;
+    }
+
+
+    for(i=0;i<26;i++){
+        if(priemer[i]>highest){
+            highest=priemer[i];
+        }
+    }
+    if(highest<10){
+        highest=11;
+    }
+    highest/=10;
+    highest=floor(highest);
+
+
+    for(i=0;i<(highest)+1;i++){
+
+        for(j=0;j<26;j++){
+            if(priemer[j]/10>(highest-i)){
+                printf("*");
+            }
+            else{
+                printf(" ");
+            }
+        }
+        printf("\n");
+
+    }
+
+    printf("\nABCDEFGHIJKLMNOPQRSTUVWXYZ\n");
 }
