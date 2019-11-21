@@ -1,8 +1,8 @@
 #include <stdio.h>
-#include <ctype.h>
-#include <stdlib.h>
-#include <string.h>
-#include <math.h>
+#include <ctype.h> //pre tolower() funkciu
+//#include <stdlib.h>
+#include <string.h> //funkcia strlen()
+#include <math.h> //funkcia floor()
 
 void nacitanie(char *p_povodny);
 void vypis(char *p_povodny);
