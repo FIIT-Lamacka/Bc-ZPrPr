@@ -4,16 +4,16 @@
 #include <string.h> //funkcia strlen()
 #include <math.h> //funkcia floor()
 
-void nacitanie(char *p_povodny);
-void vypis(char *p_povodny);
-void uprava(char *p_povodny, char *p_upraveny, int povodny_l, int *p_bola_upravena);
+void nacitanie(char *p_povodny, int *p_nacitany);
+void vypis(char *p_povodny, int *p_nacitany);
+void uprava(char *p_povodny, char *p_upraveny, int povodny_l, int *p_bola_upravena, int *p_nacitana);
 void vypis_upravena(char povodny[], int upraveny);
-void dana_dlzka(char povodny[], int dlzka);
+void dana_dlzka(char povodny[], int dlzka, int *p_nacitana);
 void histogram(char upraveny[], int upraveny_l, int bola_upravena);
 void cezar(char upraveny[], int upraveny_l, int bola_upravena);
 
 int main() {
-    int end=0,right,i,povodny_l,upraveny_l,bola_upravena=0;
+    int end=0,right,i,povodny_l,upraveny_l,bola_upravena=0, nacitany=0;
     char prikaz, povodny[1000], upraveny[1000];
 
     //Nulovanie polÌ
@@ -36,19 +36,19 @@ int main() {
 
         switch(prikaz) {
             case 'n' :
-                nacitanie(povodny);
+                nacitanie(povodny,&nacitany);
                 break;
             case 'v'  :
-                vypis(povodny);
+                vypis(povodny,&nacitany);
                 break;
             case 'u'  :
-                uprava(povodny,upraveny,povodny_l,&bola_upravena);
+                uprava(povodny,upraveny,povodny_l,&bola_upravena,&nacitany);
                 break;
             case 's'  :
                 vypis_upravena(upraveny,bola_upravena);
                 break;
             case 'd'  :
-                dana_dlzka(povodny,povodny_l);
+                dana_dlzka(povodny,povodny_l,&nacitany);
                 break;
             case 'h'  :
                 histogram(upraveny, upraveny_l, bola_upravena);
@@ -70,7 +70,7 @@ int main() {
     return 0;
 }
 
-void nacitanie(char *p_povodny){
+void nacitanie(char *p_povodny, int *p_nacitany){
     FILE *fr;
     int i=0;
     char c;
@@ -84,6 +84,7 @@ void nacitanie(char *p_povodny){
       *p_povodny=c;
         p_povodny++;
     }
+    *p_nacitany=1;
     //zo suroborom viac pracovat nebudeme cize rovno ho mÙzeme zatvoriù
     if (fclose(fr) == EOF)
       printf("Subor vstup.txt sa nepodarilo zatvorit.\n");
@@ -92,13 +93,22 @@ void nacitanie(char *p_povodny){
 
 }
 
-void vypis(char *p_povodny){
+void vypis(char *p_povodny, int *p_nacitany){
+    if(*p_nacitany==0){
+        printf("Sprava nie je nacitana\n");
+        return;
+    }
     printf("%s\n",p_povodny);
 }
 
-void uprava(char p_povodny[], char *p_upraveny, int povodny_lenght, int *p_bola_upravena){
+void uprava(char p_povodny[], char *p_upraveny, int povodny_lenght, int *p_bola_upravena, int *p_nacitana){
     int i,j=0,lenght;
     char help=0;
+
+    if(*p_nacitana==0){
+        printf("Sprava nie je nacitana\n");
+        return;
+    }
 
     for(i=0;i<povodny_lenght;i++){
        if(p_povodny[i]>='a'&&p_povodny[i]<='z'||p_povodny[i]>='A'&&p_povodny[i]<='Z'){ //zistenie ci je znak pismeno
@@ -117,11 +127,22 @@ void vypis_upravena(char povodny[], int upraveny){
         printf("Nie je k dispozicii upravena sprava\n");
     }
 }
-void dana_dlzka(char povodny[],int dlzka){
+void dana_dlzka(char povodny[],int dlzka, int *p_nacitana){
     int num,i=0,j=0,count=0,k;
     char vypis[dlzka]; //nebudeme potrebovat dlzku pola vacsiu ako pÙvodne
 
+    if(*p_nacitana==0){
+        printf("Sprava nie je nacitana\n");
+        return;
+    }
+
     scanf("%d",&num);
+
+    if(num<1||num>100){
+        printf("Cislo musi byt v rozsahu <1-100>\n");
+        return;
+    }
+
 
     while(i<(dlzka+1)){ //dlzka +1 aby sa nacital aj posledny znak \0 a na konci nemusel byt medzernik
         vypis[j]=povodny[i];
@@ -208,6 +229,7 @@ void cezar(char upraveny[], int upraveny_l, int bola_upravena){
 
     scanf("%d",&n);
     if(n<1||n>25){
+        printf("Cislo musi byt v rozsahu <1-25>\n");
         return;
     }
 
