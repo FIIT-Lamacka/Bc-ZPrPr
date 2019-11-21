@@ -243,6 +243,7 @@ void cezar(char upraveny[], int upraveny_l, int bola_upravena){
 
         printf("%c",rozsifrovane[i]);
     }
+    printf("\n");
 
 
 }
